@@ -10,9 +10,10 @@
 
   tasks:
   - name: Update EC2 instance tags
-    import_tasks: query_satellite_resource_info_hosts_set_instance_tags.yml
+    include_playbook: query_satellite_resource_info_hosts_set_instance_tags.yml
     vars:
       HOSTS: satellite.example.com
+    delegate_to: satellite
 
   - name: Update inventory via source ==> EC2 Dynamic Source - CentOS7 Development
     tower_inventory_source_update:
