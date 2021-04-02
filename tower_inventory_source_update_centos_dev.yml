@@ -10,7 +10,7 @@
 
   tasks:
   - name: Update EC2 instance tags
-    import_playbook: query_satellite_resource_info_hosts_set_instance_tags.yml
+    import_tasks: query_satellite_resource_info_hosts_set_instance_tags.yml
     vars:
       HOSTS: satellite.example.com
 
