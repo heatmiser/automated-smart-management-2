@@ -16,14 +16,14 @@
       redhat.satellite.status_info:
         validate_certs: false
 
-    #- name: refresh manifest
-    #  redhat.satellite.subscription_manifest:
-    #    organization: "Default Organization"
-    #    state: refreshed
-    #  async: "{{ refresh_timeout }}"
-    #  poll: 0
-    #  register: refresh_async
-    #  when: refresh_satellite_manifest
+    - name: refresh manifest
+      redhat.satellite.subscription_manifest:
+        organization: "Default Organization"
+        state: refreshed
+      async: "{{ refresh_timeout }}"
+      poll: 0
+      register: refresh_async
+      when: refresh_satellite_manifest
 
     - name: >
         Watch the Satellite production.log until ManifestRefresh result ==> success appears before continuing...
