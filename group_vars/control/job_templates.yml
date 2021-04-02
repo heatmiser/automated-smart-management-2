@@ -366,3 +366,10 @@ tower_templates:
           guid: smrtmgmt01
           Student: student1
           short_name: node*
+
+  - name: TOWER / Update CentOS7 Dev inventories
+    project: Automated Management
+    playbook: tower_inventory_source_update_centos7_dev.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Tower Credential
