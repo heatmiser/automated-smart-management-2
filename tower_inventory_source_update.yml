@@ -9,14 +9,26 @@
     tower_validate_certs: false
 
   tasks:
-  - name: Update inventory via source ==> EC2 Dynamic Source - "{{ env_inventory }}" Development
+  - set_fact:
+      environment_name_expanded: "Development"
+    when: environment == "Dev"
+
+  - set_fact:
+      environment_name_expanded: "QA"
+    when: environment == "QA"
+
+  - set_fact:
+      environment_name_expanded: "Production"
+    when: environment == "Prod"
+
+  - name: Update inventory via source ==> EC2 Dynamic Source - "{{ content_view }}" "{{ environment_name_expanded }}"
     tower_inventory_source_update:
-      name: "EC2 Dynamic Source - {{ env_inventory }} Development"
-      inventory: "{{ env_inventory }} Development"
+      name: "EC2 Dynamic Source - {{ content_view }} {{ environment_name_expanded }}"
+      inventory: "{{ content_view }} {{ environment_name_expanded }}"
       organization: Default
 
-  - name: Update inventory via source ==> inventory_{{ env_inventory | lower }}_dev.aws_ec2
+  - name: Update inventory via source ==> inventory_{{ content_view | lower }}_{{ environment_name_expanded | lower }}.aws_ec2
     tower_inventory_source_update:
-      name: "inventory_{{ env_inventory | lower }}_dev.aws_ec2"
-      inventory: "ALL Development"
+      name: "inventory_{{ content_view | lower }}_{{ environment_name_expanded | lower }}.aws_ec2"
+      inventory: "ALL {{ environment_name_expanded }}"
       organization: Default
