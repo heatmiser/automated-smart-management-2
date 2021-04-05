@@ -2,7 +2,7 @@
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
   vars:
-    refresh_satellite_manifest: false
+    refresh_satellite_manifest: no
     refresh_timeout: 14400
     refresh_retry_interval: 15
 
@@ -10,6 +10,12 @@
     - name: check satellite status
       redhat.satellite.status_info:
         validate_certs: false
+
+    - name: satellite disconnected mode
+      import_playbook: satellite_disconnected_mode.yml
+      vars:
+        disconnected_mode: "false"
+      when: refresh_satellite_manifest
 
     - name: refresh manifest
       redhat.satellite.subscription_manifest:
@@ -23,7 +29,7 @@
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   become: true
   vars:
-    refresh_satellite_manifest: false
+    refresh_satellite_manifest: no
     refresh_timeout: 14400
     refresh_retry_interval: 15
 
