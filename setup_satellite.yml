@@ -1,4 +1,10 @@
 ---
+- name: satellite disconnected mode
+  import_playbook: satellite_disconnected_mode.yml
+  vars:
+    disconnected_mode: "false"
+  when: refresh_satellite_manifest
+  
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   connection: local
   vars:
@@ -10,12 +16,6 @@
     - name: check satellite status
       redhat.satellite.status_info:
         validate_certs: false
-
-    - name: satellite disconnected mode
-      import_playbook: satellite_disconnected_mode.yml
-      vars:
-        disconnected_mode: "false"
-      when: refresh_satellite_manifest
 
     - name: refresh manifest
       redhat.satellite.subscription_manifest:
