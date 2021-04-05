@@ -2,7 +2,7 @@
 - hosts: "{{ HOSTS | default('satellite.example.com') }}"
   become: true
   vars:
-    disconnected_mode: true
+    disconnected_mode: "true"
   tasks:
     - name: disconnected mode on ==> "{{ disconnected_mode }}"
       command: >-
