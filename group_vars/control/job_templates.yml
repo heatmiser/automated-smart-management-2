@@ -373,3 +373,28 @@ tower_templates:
     inventory: Workshop Inventory
     credentials:
       - Tower Credential
+
+  - name: TOWER / Update inventories via dynamic sources
+    project: Automated Management
+    playbook: tower_inventory_source_update.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Tower Credential
+    survey_enabled: true
+    survey:
+      name: ''
+      description: ''
+      spec:
+        - question_name: Select inventory to update
+          variable: content_view
+          type: multiplechoice
+          choices: "{{ hostvars['satellite.example.com']['foreman_content_views'] | selectattr('name', 'match', '*') | map(attribute='name') | list}}"
+          required: true
+        - question_name: Choose Environment
+          type: multiplechoice
+          variable: environment
+          choices:
+            - Dev
+            - QA
+            - Prod
+          required: true
