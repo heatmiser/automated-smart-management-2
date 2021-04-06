@@ -11,15 +11,15 @@
   tasks:
   - set_fact:
       environment_name_expanded: "Development"
-    when: environment == "Dev"
+    when: env == "Dev"
 
   - set_fact:
       environment_name_expanded: "QA"
-    when: environment == "QA"
+    when: env == "QA"
 
   - set_fact:
       environment_name_expanded: "Production"
-    when: environment == "Prod"
+    when: env == "Prod"
 
   - name: Update inventory via source ==> EC2 Dynamic Source - "{{ content_view }}" "{{ environment_name_expanded }}"
     tower_inventory_source_update:
