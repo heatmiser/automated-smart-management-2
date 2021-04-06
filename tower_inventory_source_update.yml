@@ -27,8 +27,8 @@
       inventory: "{{ content_view }} {{ environment_name_expanded }}"
       organization: Default
 
-  - name: Update inventory via source ==> inventory_{{ content_view | lower }}_{{ environment_name_expanded | lower }}.aws_ec2
+  - name: Update inventory via source ==> inventory_{{ content_view | lower }}_{{ env | lower }}.aws_ec2
     tower_inventory_source_update:
-      name: "inventory_{{ content_view | lower }}_{{ environment_name_expanded | lower }}.aws_ec2"
+      name: "inventory_{{ content_view | lower }}_{{ env | lower }}.aws_ec2"
       inventory: "ALL {{ environment_name_expanded }}"
       organization: Default
