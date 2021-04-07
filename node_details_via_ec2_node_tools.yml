@@ -1,5 +1,5 @@
 ---
-- hosts: control
+- hosts: "{{ HOSTS | default('control[0]') }}"
   connection: local
   gather_facts: false
   tasks:
