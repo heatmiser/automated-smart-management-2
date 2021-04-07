@@ -1,0 +1,25 @@
+---
+- hosts: "{{ HOSTS | default('control[0]') }}"
+  connection: local
+  vars:
+    organization: "Default Organization"
+    validate_certs: false
+  tasks:
+  - name: "Get instance details"
+    import_role:
+      name: ec2_node_tools
+      tasks_from: get_instance_details
+
+  - name: route53 tower dns update
+    become: false
+    vars:
+      tower_dns_record_state: present
+    route53:
+      state: "{{ tower_dns_record_state }}"
+      zone: "{{ workshop_dns_zone }}"
+      record: "{{ instances_details.instances|selectattr('tags.short_name', 'equalto', 'ansible-1')|map(attribute='public_ip_address') }}"
+      type: A
+      overwrite: true
+      value: "{{ tower_external_ip }}"
+      wait: true
+    when: instances_details is not none
