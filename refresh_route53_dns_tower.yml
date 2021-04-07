@@ -17,9 +17,9 @@
     route53:
       state: "{{ tower_dns_record_state }}"
       zone: "{{ workshop_dns_zone }}"
-      record: "{{ instances_details.instances|selectattr('tags.short_name', 'equalto', 'ansible-1')|map(attribute='public_ip_address') }}"
+      record: "{{ username }}.{{ ec2_name_prefix | lower }}.{{ workshop_dns_zone }}"
       type: A
       overwrite: true
-      value: "{{ tower_external_ip }}"
+      value: "{{ instances_details.instances|selectattr('tags.short_name', 'equalto', 'ansible-1')|map(attribute='public_ip_address') }}"
       wait: true
     when: instances_details is not none
