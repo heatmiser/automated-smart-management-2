@@ -367,6 +367,55 @@ tower_templates:
           Student: student1
           short_name: node*
 
+  - name: EC2 / Get instance details via ec2_node_tools role
+    description: Utilize ec2_node_tools role to display info available per instance/node
+    project: Automated Management
+    playbook: node_details_via_ec2_node_tools.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      ec2_region: us-east-1
+      instances:
+        tags:
+          guid: smrtmgmt01
+          Student: student1
+          short_name: node*
+
+  - name: EC2 / Update Route53 - Satellite
+    description: Update Route53 records with current Satellite external IP
+    project: Automated Management
+    playbook: refresh_route53_dns_satellite.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      ec2_region: us-east-1
+      instances:
+        tags:
+          guid: smrtmgmt01
+          Student: student1
+      workshop_dns_zone: s4v0.redhatpartnertech.net
+      ec2_name_prefix: smrtmgmt01
+      username: student1
+
+  - name: EC2 / Update Route53 - Tower
+    description: Update Route53 records with current Tower external IP
+    project: Automated Management
+    playbook: refresh_route53_dns_tower.yml
+    inventory: Workshop Inventory
+    credentials:
+      - Workshop Credential
+    extra_vars:
+      ec2_region: us-east-1
+      instances:
+        tags:
+          Student: student1
+          Workshop_ansible: smrtmgmt01-ansible-1
+      workshop_dns_zone: s4v0.redhatpartnertech.net
+      ec2_name_prefix: smrtmgmt01
+      username: student1
+
   - name: TOWER / Update CentOS7 Dev inventories
     project: Automated Management
     playbook: tower_inventory_source_update_centos7_dev.yml
