@@ -17,10 +17,14 @@
     route53:
       state: "{{ tower_dns_record_state }}"
       zone: "{{ workshop_dns_zone }}"
-      record: "{{ instances.tags.Student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}"
+      record: "{{ student }}.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}"
       type: A
       overwrite: yes
-      value: "{{ instances_details.instances|selectattr('tags.short_name', 'equalto', 'ansible-1')|map(attribute='public_ip_address') | list }}"
+      value: "{{ instances_details.instances
+      | selectattr('tags.short_name', 'equalto', 'ansible-1')
+      | selectattr('tags.Student', 'equalto', '{{ student }}')
+      | map(attribute='public_ip_address')
+      | list }}"
       wait: yes
     when: instances_details is not none
 
@@ -31,10 +35,14 @@
     route53:
       state: "{{ code_dns_record_state }}"
       zone: "{{ workshop_dns_zone }}"
-      record: "{{ instances.tags.Student }}-code.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}"
+      record: "{{ student }}-code.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}"
       type: A
       overwrite: yes
-      value: "{{ instances_details.instances|selectattr('tags.short_name', 'equalto', 'ansible-1')|map(attribute='public_ip_address') | list }}"
+      value: "{{ instances_details.instances
+      | selectattr('tags.short_name', 'equalto', 'ansible-1')
+      | selectattr('tags.Student', 'equalto', '{{ student }}')
+      | map(attribute='public_ip_address')
+      | list }}"
       wait: yes
     when: instances_details is not none
 
@@ -45,10 +53,14 @@
     route53:
       state: "{{ satellite_dns_record_state }}"
       zone: "{{ workshop_dns_zone }}"
-      record: "{{ instances.tags.Student }}-sat.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}"
+      record: "{{ student }}-sat.{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}"
       type: A
       overwrite: yes
-      value: "{{ instances_details.instances|selectattr('tags.short_name', 'equalto', 'satellite')|map(attribute='public_ip_address') | list }}"
+      value: "{{ instances_details.instances
+      | selectattr('tags.short_name', 'equalto', 'satellite')
+      | selectattr('tags.Student', 'equalto', '{{ student }}')
+      | map(attribute='public_ip_address')
+      | list }}"
       wait: yes
     when: instances_details is not none
 
@@ -62,6 +74,11 @@
       record: "{{ instances.tags.Workshop | lower }}.{{ workshop_dns_zone }}"
       type: A
       overwrite: yes
-      value: "{{ instances_details.instances|selectattr('tags.short_name', 'equalto', 'attendance-host')|map(attribute='public_ip_address') | list }}"
+      value: "{{ instances_details.instances
+      | selectattr('tags.short_name', 'equalto', 'attendance-host')
+      | map(attribute='public_ip_address')
+      | list }}"
       wait: yes
-    when: instances_details is not none
+    when:
+      - instances_details is not none
+      - student == 'student1'
