@@ -110,7 +110,7 @@
       dest: "{{ item['source'] }}"
     with_items: "{{ slurped_files_list['results'] }}"
 
-  - name: Ensure "{{ item }}" is immutable
+  - name: Ensure RHEL certs and keys are immutable
     file:
       path: "{{ item }}"
       attr: +i
