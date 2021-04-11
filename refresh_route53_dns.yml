@@ -22,7 +22,7 @@
       overwrite: yes
       value: "{{ instances_details.instances
       | selectattr('tags.short_name', 'equalto', 'ansible-1')
-      | selectattr('tags.Student', 'equalto', {{ student }})
+      | selectattr('tags.Student', 'equalto', student)
       | map(attribute='public_ip_address')
       | list }}"
       wait: yes
